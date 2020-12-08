@@ -1,0 +1,23 @@
+<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+    <div class="card-header text-center">Shopping Cart</div>
+    <div class="card-body">
+        <h5 class="card-title">Total: {{total | currency : 'INR'}}</h5>
+        <hr>
+        <h6 class="card-title">Items bought:</h6>
+
+        <ul>
+            <span *ngFor="let order of orders.productOrders">
+            <li *ngIf="order.product.itemRate == 'gms'">
+                {{ order.product.name }} - {{ order.quantity * 250}} gms.
+            </li>
+            <li *ngIf="order.product.itemRate == 'pcs'">
+                {{ order.product.name }} - {{ order.quantity}} pcs.
+            </li>
+            </span>
+        </ul>
+
+        <button class="btn btn-light btn-block" (click)="finishOrder()"
+                [disabled]="orders.productOrders.length == 0">Checkout
+        </button>
+    </div>
+</div>

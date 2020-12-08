@@ -1,0 +1,133 @@
+<div class="row card-deck">
+    <div class="col-md-7">
+        <h2 class="text-center">Your Order</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Item</th>
+                <th scope="col">Quantity</th>
+                <th scope="col" align="right">Rate</th>
+                <th scope="col" align="right">Price</th>
+                <th scope="col" align="right">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders.productOrders; let i = index">
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{ order.product.name }}</td>
+                    <td *ngIf="order.product.itemRate == 'gms'">{{ order.quantity * 250}} gms.</td>
+                    <td *ngIf="order.product.itemRate == 'pcs'">{{ order.quantity}} pcs.</td>
+                    <td align="right" *ngIf="order.product.itemRate == 'gms'">
+                        {{ order.product.price | currency : 'INR' }}/250 gms
+                    </td>
+                    <td align="right" *ngIf="order.product.itemRate == 'pcs'">
+                        {{ order.product.price | currency : 'INR' }}/1 pcs.
+                    </td>
+                    <td align="right">{{ order.quantity * order.product.price | currency : 'INR'}}</td>
+                    <!--<td align="right"><a [routerLink]="#" (click)="removeItem(i)"
+                        *ngIf="orders.productOrders.length > 1">Remove</a></td>-->
+                    <td align="right">
+                        <button type="button" class="btn btn-link btn-sm" 
+                        (click)="removeItem(order,i)" title="Remove Item" *ngIf="orders.productOrders.length > 1">x</button>
+                    </td>    
+
+                </tr>
+            </tbody>
+        </table>
+        <blockquote class="blockquote text-right">
+            <p class="mb-0"><b>Total amount: {{ total | currency : 'INR'}}*</b></p>
+            <footer class="blockquote-footer">*Delivery Charges extra as applicable 
+                <a href="#" data-toggle="modal" data-target="#deliveryCharges">(see here)</a><br/>
+                <small class="text-muted">(Click on 'Home' to reset and start a new order)</small>
+            </footer>
+        </blockquote>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">
+                <b>Payment Options : </b> Cash&nbsp;/&nbsp;Paytm&nbsp;/&nbsp;GooglePay On Delivery
+            </li>
+        </ol>
+    </div>
+<div class="col-md-5">
+<form #checkoutForm="ngForm" (ngSubmit)="payNew(checkoutForm.value);checkoutForm.form.reset()" 
+    autocomplete="off" novalidate>
+        <div class="form-group" >
+            <label for="customerName">Name*:</label>
+            <em *ngIf="checkoutForm.form.controls.customerName?.touched &&
+                    checkoutForm.form.controls.customerName?.invalid">
+                A valid name required.(min. 3 chars, max. 40 chars)</em>    
+            <input (ngModel)="customerName" name="customerName" id="customerName" 
+                type="text" class="form-control" 
+                placeholder="Please Enter your Name(min. 3 characters)..." 
+                maxlength="40" minlength="3" required/>
+        </div>
+        <div class="form-group" >
+            <label for="mobileNumber">Mobile*:</label>
+            <em *ngIf="checkoutForm.form.controls.mobileNumber?.touched &&
+                    checkoutForm.form.controls.mobileNumber?.invalid &&
+                    checkoutForm.form.controls.mobileNumber?.errors?.pattern">
+                A valid 10 digit number required.(must start with 7/8/9)</em>    
+            <input (ngModel)="mobileNumber" name="mobileNumber" id="mobileNumber" 
+                type="text" class="form-control" 
+                placeholder="Please Enter a valid 10 digit mobile number(must start with 7/8/9)..." 
+                maxlength="10" required pattern="[789][0-9]{9}"
+                aria-describedby="mobileHelp"/>
+                <small id="mobileHelp" class="form-text text-muted">We'll never share your mobile with anyone else.</small>
+        </div>
+        <div class="form-group" >
+            <label for="address">Address*:</label>
+            <em *ngIf="checkoutForm.form.controls.address?.invalid &&
+                checkoutForm.form.controls.address?.touched">Required</em>
+            <textarea (ngModel)="address" name="address" id="address" 
+            type="address" class="form-control is-valid" 
+            placeholder="Please Enter a valid address(max length : 450 chars.)..." maxlength="450" required></textarea>
+            <div class="valid-feedback"><b>Note : </b><br/>
+                <span *ngFor="let msg of devlieryTimeMessages"> - {{msg}}<br/></span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" 
+        [disabled]="checkoutForm.invalid"  *ngIf="!paid">Place the order!</button>
+</form>
+<div class="alert alert-success" role="alert" *ngIf="success">
+    {{message}}
+</div>
+<div class="alert alert-danger" role="alert" *ngIf="isError">
+    {{message}}
+</div>
+<div class="modal" id="deliveryCharges">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delivery Charges</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>
+              Our Delivery Center is located :<br/>
+              <b>{{deliveryCentreAddress}}</b>  
+            </p>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Distance</th>
+                        <th scope="col">Charges</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor=" let charge of deliveryCharges">
+                        <td>{{charge.distance}}</td>
+                        <td align="right">{{ charge.charges | currency : 'INR'}}/-</td>
+                    </tr>
+                </tbody>
+            </table>    
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

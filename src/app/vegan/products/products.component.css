@@ -1,0 +1,10 @@
+.padding-0 {
+    padding-right: 0;
+    padding-left: 1;
+}
+
+aboutus-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 95vh;
+  }

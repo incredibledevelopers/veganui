@@ -1,0 +1,29 @@
+[{
+	 "id" : 1,
+	 "pictureUrl" : "D:\Amod\Projects\Angular\spring-boot-angular-ecommerce\vegan-ui\src\assets\vegetables\tomato.jpg",
+     "name" : "Tomato",
+     "price" : "20",
+	 "available" : "Y"
+   },
+   {
+	 "id" : 2,
+     "pictureUrl" : "D:\Amod\Projects\Angular\spring-boot-angular-ecommerce\vegan-ui\src\assets\vegetables\cauliflower.jpg",
+     "name" : "Cauliflower",
+     "price" : "20",
+	 "available" : "Y"
+   },
+   {
+     "id" : 3,
+     "pictureUrl" : "D:\Amod\Projects\Angular\spring-boot-angular-ecommerce\vegan-ui\src\assets\vegetables\pumpkin.jpg",
+     "name" : "Pumpkin",
+     "price" : "20",
+	 "available" : "Y"
+   },
+   {
+     "id" : 4,
+     "pictureUrl" : "D:\Amod\Projects\Angular\spring-boot-angular-ecommerce\vegan-ui\src\assets\vegetables\brinjal.jpg",
+     "name" : "Brinjal",
+     "price" : "20",
+	 "available" : "N"
+   }
+  ]

@@ -1,0 +1,99 @@
+<span *ngFor="let category of itemCategories">
+<div class="row card-deck" id="{{category}}">
+    <div class="col-lg-4 col-md-6 mb-4" *ngFor="let order of productOrders | values : category">
+        <div class="card w-90 h-100 text-center" *ngIf="order.product.itemCategory === category">
+            <div class="card-header">
+                <h6>{{order.product.name}}/{{order.product.itemCategory == category}}</h6>
+            </div>
+            <div class="card-body">
+                <a href="#"><img class="card-img-top" src={{order.product.pictureUrl}} alt=""></a>
+                <h6 class="card-title">{{order.product.price | currency : 'INR'}}&nbsp;/&nbsp;250gms</h6>
+                <div class="row">
+                    <div class="col-6 padding-0" *ngIf="!isProductSelected(order.product)">
+                        <!--<input type="number" min="0" class="form-control" [(ngModel)]=order.quantity>-->
+                        <select class="form-control"  [(ngModel)]=order.quantity>
+                            <option value="0" selected>0</option>
+                            <option value="1">250</option>
+                            <option value="2">500</option>
+                            <option value="3">750</option>
+                            <option value="4">1000</option>
+                          </select>
+                    </div>
+                    <div class="col-4 padding-0" *ngIf="!isProductSelected(order.product)">
+                        <button class="btn btn-primary" (click)="addToCart(order)"
+                                [disabled]="order.quantity <= 0" style="font-size:0.7rem">Add To Cart
+                        </button>
+                    </div>
+                    <div class="col-12" *ngIf="isProductSelected(order.product)">
+                        <button class="btn btn-primary btn-block"
+                                (click)="removeFromCart(order)">Remove From Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="card w-90 h-100 text-center" 
+            *ngIf="order.product.itemCategory == 'EX' && exoticCategory">
+            <div class="card-header">
+                <h6>{{order.product.name}}/{{order.product.itemCategory}}</h6>
+            </div>
+            <div class="card-body">
+                <a href="#"><img class="card-img-top" src={{order.product.pictureUrl}} alt=""></a>
+                <h6 class="card-title">{{order.product.price | currency : 'INR'}}&nbsp;/&nbsp;250gms</h6>
+                <div class="row">
+                    <div class="col-6 padding-0" *ngIf="!isProductSelected(order.product)">
+                        <select class="form-control"  [(ngModel)]=order.quantity>
+                            <option value="0" selected>0</option>
+                            <option value="1">250</option>
+                            <option value="2">500</option>
+                            <option value="3">750</option>
+                            <option value="4">1000</option>
+                          </select>
+                    </div>
+                    <div class="col-4 padding-0" *ngIf="!isProductSelected(order.product)">
+                        <button class="btn btn-primary" (click)="addToCart(order)"
+                                [disabled]="order.quantity <= 0" style="font-size:0.7rem">Add To Cart
+                        </button>
+                    </div>
+                    <div class="col-12" *ngIf="isProductSelected(order.product)">
+                        <button class="btn btn-primary btn-block"
+                                (click)="removeFromCart(order)">Remove From Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card w-90 h-100 text-center"
+            *ngIf="order.product.itemCategory == 'DL' && dalCategory">
+            <div class="card-header">
+                <h6>{{order.product.name}}/{{order.product.itemCategory}}</h6>
+            </div>
+            <div class="card-body">
+                <a href="#"><img class="card-img-top" src={{order.product.pictureUrl}} alt=""></a>
+                <h6 class="card-title">{{order.product.price | currency : 'INR'}}&nbsp;/&nbsp;250gms</h6>
+                <div class="row">
+                    <div class="col-6 padding-0" *ngIf="!isProductSelected(order.product)">
+                        <select class="form-control"  [(ngModel)]=order.quantity>
+                            <option value="0" selected>0</option>
+                            <option value="1">250</option>
+                            <option value="2">500</option>
+                            <option value="3">750</option>
+                            <option value="4">1000</option>
+                          </select>
+                    </div>
+                    <div class="col-4 padding-0" *ngIf="!isProductSelected(order.product)">
+                        <button class="btn btn-primary" (click)="addToCart(order)"
+                                [disabled]="order.quantity <= 0" style="font-size:0.7rem">Add To Cart
+                        </button>
+                    </div>
+                    <div class="col-12" *ngIf="isProductSelected(order.product)">
+                        <button class="btn btn-primary btn-block"
+                                (click)="removeFromCart(order)">Remove From Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+</div>
+</span>   

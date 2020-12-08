@@ -1,0 +1,81 @@
+<div class="alert alert-dismissible alert-warning" *ngIf="offers.length > 0">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h4 class="alert-heading">Today's Offers!</h4>
+  <p class="mb-0" *ngFor="let offer of offers">
+    -&nbsp;<b>{{offer}}</b>
+  </p>
+</div>
+<span *ngFor="let itemCategory of itemCategories; let i = index">
+    <div class="alert alert-dismissible alert-secondary" *ngIf="itemCategory.items.length == 0 && itemCategory.noItems">
+          Sorry, No Items available! 
+    </div>
+    <div class="row card-deck" id="{{itemCategory.category}}" *ngIf="itemCategory.active">
+      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let order of itemCategory.items">
+        <div class="card w-90 h-100 text-center">
+          <div class="card-header">
+            <h6>{{order.product.name}}</h6>
+          </div>
+          <div class="card-body">
+                <img class="card-img-top" 
+                  src={{itemCategory.imagesFolder}}{{order.product.pictureUrl}}>
+                <h6 class="card-title" *ngIf="order.product.itemRate == 'gms'">
+                    {{order.product.price | currency : 'INR'}}&nbsp;/&nbsp;250gms
+                </h6>
+                <h6 class="card-title" *ngIf="order.product.itemRate == 'pcs'">
+                  {{order.product.price | currency : 'INR'}}&nbsp;/&nbsp;1 pcs.
+                </h6>
+                <div class="row">
+                  <div class="col-6 padding-0" *ngIf="!isProductSelected(order.product)">
+                    <select class="form-control"  [(ngModel)]="order.quantity" 
+                        *ngIf="order.product.itemRate == 'gms'">
+                        <option *ngFor="let unit of gmsUnits; let j = index" value="{{j}}">
+                          {{unit}}&nbsp;gms</option>
+                    </select>
+                    <select class="form-control"  [(ngModel)]="order.quantity"
+                      *ngIf="order.product.itemRate == 'pcs'">
+                      <option *ngFor="let unit of pcsUnits; let j = index" value="{{j}}">
+                        {{unit}}&nbsp;pcs</option>
+                  </select>
+                </div>
+                <div class="col-4 padding-0" *ngIf="!isProductSelected(order.product)">
+                    <button class="btn btn-primary" (click)="addToCart(order)"
+                            [disabled]="order.quantity <= 0" style="font-size:0.7rem">Add To Cart
+                    </button>
+                </div>
+                <div class="col-12" *ngIf="isProductSelected(order.product)">
+                  <button class="btn btn-primary btn-block"
+                          (click)="removeFromCart(order)">Remove From Cart
+                  </button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+</span>
+<div class="jumbotron" *ngIf="showAboutUs">
+  <p class="lead">
+    Established in 2010, we, at <b>EN' ROOT farming</b>, aim at delivering  a fresh and hygenic agricultural produce at your doorstep.
+    <img class="img-fluid" src="assets/pic_1.jpg">
+  </p>
+  <hr class="my-4">
+  <p>We ship from farmers directly to our store, which helps in
+    <ul>
+      <li>Ensuring that, a fresh produce is delivered.</li>
+      <li>Minimum wastage.</li>
+      <li>Improving farmer's income.</li>
+      <li>Bringing down the prices.</li>
+    </ul>
+    <img class="img-fluid" src="assets/pic_2.jpg">
+  <hr class="my-4">
+  <p>
+    We deliver at your home. Or feel free to stop by at our shop at our address  below:<br/>
+    <b>{{deliveryCenterAddress}}</b> 
+  </p>
+  <hr class="my-4">
+  <p>
+    Reach out to us on our helpline numbers below for any queries/suggestions/feedback:
+    <b>{{contactNumbers}}</b> 
+  </p>
+</div>
+

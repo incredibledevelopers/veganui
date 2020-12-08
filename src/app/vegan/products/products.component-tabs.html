@@ -1,0 +1,58 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item" *ngFor="let itemCategory of itemCategories; let i = index">
+      <a [ngClass]="i == 0 ? 'nav-link active': 'nav-link'" 
+        data-toggle="tab" href="#{{itemCategory.displayName}}">{{itemCategory.displayName}}</a>
+    </li>
+</ul>
+  <div id="myTabContent" class="tab-content">
+    <div *ngFor="let itemCategory of itemCategories; let i = index" 
+      id="{{itemCategory.displayName}}" [ngClass]="i == 0 ? 'tab-pane fade show active': 'tab-pane fade'">
+       <br/>
+       <div class="alert alert-dismissible alert-secondary" *ngIf="itemCategory.items.length == 0">
+          Sorry, No Items available! 
+      </div> 
+       <div class="row card-deck">
+        <div class="col-lg-4 col-md-6 mb-4" *ngFor="let order of itemCategory.items">
+            <div class="card w-90 h-100 text-center">
+              <div class="card-header">
+                <h6>{{order.product.name}}</h6>
+              </div>
+                <div class="card-body">
+                  <a href="#"><img class="card-img-top" src={{itemCategory.imagesFolder}}{{order.product.pictureUrl}} alt=""></a>
+                    <h6 class="card-title" *ngIf="order.product.itemRate == 'gms'">
+                        {{order.product.price | currency : 'INR'}}&nbsp;/&nbsp;250gms
+                    </h6>
+                    <h6 class="card-title" *ngIf="order.product.itemRate == 'pcs'">
+                      {{order.product.price | currency : 'INR'}}&nbsp;/&nbsp;1 pcs.
+                    </h6>
+                    <div class="row">
+                      <div class="col-6 padding-0" *ngIf="!isProductSelected(order.product)">
+                        <select class="form-control"  [(ngModel)]="order.quantity" 
+                            *ngIf="order.product.itemRate == 'gms'">
+                            <option *ngFor="let unit of gmsUnits; let j = index" value="{{j}}">
+                              {{unit}}&nbsp;gms</option>
+                        </select>
+                        <select class="form-control"  [(ngModel)]="order.quantity"
+                          *ngIf="order.product.itemRate == 'pcs'">
+                          <option *ngFor="let unit of pcsUnits; let j = index" value="{{j}}">
+                            {{unit}}&nbsp;pcs</option>
+                      </select>
+                      </div>
+                      <div class="col-4 padding-0" *ngIf="!isProductSelected(order.product)">
+                          <button class="btn btn-primary" (click)="addToCart(order)"
+                                  [disabled]="order.quantity <= 0" style="font-size:0.7rem">Add To Cart
+                          </button>
+                      </div>
+                      <div class="col-12" *ngIf="isProductSelected(order.product)">
+                        <button class="btn btn-primary btn-block"
+                                (click)="removeFromCart(order)">Remove From Cart
+                        </button>
+                      </div>
+                    </div>
+                </div>
+            </div>
+          </div>  
+      </div>
+    </div>
+  </div>
+
