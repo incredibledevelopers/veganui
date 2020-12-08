@@ -11,7 +11,7 @@ declare var require: any;
 @Injectable()
 export class VeganService extends ApiBaseService {
     //private productsUrl = "http://localhost:8080/api/products";
-    private ordersUrl = "http://localhost:8080/api/orders";
+    private ordersUrl = "https://enroot-farming.herokuapp.com/api/orders";
 
     private productOrder: ProductOrder;
     private orders: ProductOrders = new ProductOrders();
